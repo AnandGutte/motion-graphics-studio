@@ -1,12 +1,17 @@
-# Science Video Lab — Fully Local, Disposable Setup
+# Science Video Lab — Cross-Platform Animated Video Production
 
-A self-contained, disposable development and rendering environment for programmatic animated YouTube Shorts (9:16 vertical video) powered by **Remotion**, **React 18**, **TypeScript**, and **FFmpeg**.
+A self-contained, portable development and rendering environment for programmatic animated YouTube Shorts and science documentaries powered by **Remotion**, **React 18**, **TypeScript**, **Kokoro Neural TTS**, and **FFmpeg**.
 
-## Project Highlights
-- **100% Isolated**: Uses a project-local Node.js LTS arm64 runtime, project-local static FFmpeg/ffprobe binaries, and project-local caches.
-- **Zero Global Pollution**: No Homebrew packages, no `sudo`, no global npm packages, and no modifications to macOS system PATH or shell configurations.
-- **Dropbox Excluded**: Marked with `com.dropbox.ignored 1` so Dropbox sync does not thrash on `node_modules` or render caches.
-- **Agent Skills**: Pre-configured with 5 workspace-local skills in `.agents/skills/`.
+Designed for seamless portability between **macOS (Apple Silicon)** and **Windows 11 (NVIDIA GeForce RTX 4070)**.
+
+---
+
+## Highlights
+- **Cross-Platform**: Dual execution pipelines for macOS (Bash + MLX Metal) and Windows 11 (PowerShell + PyTorch CUDA / NVENC).
+- **Zero Global Dependencies**: All runtimes, node_modules, Python environments, browser downloads, model weights, and caches are local and excluded from source control via `.gitignore`.
+- **Neural Voice Synthesis**: On-device neural text-to-speech via **Kokoro-82M** (Apple Silicon MLX or NVIDIA CUDA).
+- **Programmatic Motion Graphics**: Deterministic SVG vector animation, spring dynamics, and scene choreography in React.
+- **6 Workspace-Local Agent Skills**: Pre-configured in `.agents/skills/` for Antigravity-powered development.
 
 ---
 
@@ -15,37 +20,40 @@ A self-contained, disposable development and rendering environment for programma
 science-video-lab/
 ├── .agents/
 │   └── skills/
-│       ├── remotion-video/           # Remotion CLI, compositions, and rendering workflows
+│       ├── remotion-video/           # Remotion CLI, compositions, and rendering
 │       ├── react-motion-graphics/    # Spring physics, deterministic animation principles
 │       ├── svg-animation/            # Procedural SVGs, radial gradients, coronal glows
-│       ├── ffmpeg-audio-video/       # Local FFmpeg/ffprobe inspection & transcoding
-│       └── video-qa/                 # Quality assurance & YouTube Shorts spec validation
-├── .cache/                           # Remotion bundle cache & Chromium headless shell
-├── .config/                          # Project local configs
-├── .npm-cache/                       # Isolated npm cache (via .npmrc)
-├── .tmp/                             # Isolated render temp files
-├── tools/
-│   ├── bin/                          # Standalone arm64 FFmpeg & ffprobe binaries
-│   └── node/                         # Standalone Node.js v22 LTS arm64 runtime
+│       ├── ffmpeg-audio-video/       # Local FFmpeg/ffprobe inspection & normalization
+│       ├── video-qa/                 # Quality assurance & YouTube Shorts spec validation
+│       └── neural-narration/         # On-device Kokoro neural TTS pipeline
 ├── src/
-│   ├── components/
-│   │   ├── Sun.tsx                   # Declarative animated vector Sun with coronal flares
-│   │   └── Title.tsx                 # Spring-interpolated cinematic title card
-│   ├── compositions/                 # Scene choreography
-│   ├── scenes/
-│   │   └── SunScene.tsx              # 1080x1920 vertical composition
+│   ├── components/                   # Reusable vector graphic components
+│   │   ├── CartoonSun.tsx            # Animated vector Sun with implosive vanish burst
+│   │   ├── CartoonEarth.tsx          # Vector globe with day/night shader & city lights
+│   │   ├── Starfield.tsx             # Deterministic parallax starfield
+│   │   ├── LightBeam.tsx             # Photonic wave packets with trailing particles
+│   │   ├── OrbitDiagram.tsx          # Relativistic space-time grid & gravity ripple
+│   │   ├── TimerBadge.tsx            # Digital HUD timer
+│   │   └── Captions.tsx              # YouTube Shorts safe-area typography pills
+│   ├── scenes/                       # Individual scene components (Scenes 1 - 6)
+│   ├── compositions/                 # Master compositions (MainShort.tsx)
 │   ├── Root.tsx                      # Remotion composition registry
 │   └── index.ts                      # Remotion entry point
 ├── scripts/
-│   ├── run-in-env.sh                 # Environment runner injecting local tools into PATH
-│   ├── npm.sh                        # Project-local npm wrapper
-│   ├── npx.sh                        # Project-local npx wrapper
-│   ├── render.sh                     # Renders the 3-second Sun animation to MP4
-│   └── probe.sh                      # Runs project-local ffprobe
-├── output/
-│   ├── sun-animation.mp4             # 1080x1920 30fps H.264 MP4 export
-│   └── thumbnail.png                 # Extracted preview frame
+│   ├── render.sh / render.ps1        # Render composition to MP4 (macOS / Windows)
+│   ├── preview.sh / preview.ps1      # Launch Remotion interactive web preview
+│   ├── probe.sh / probe.ps1          # ffprobe inspection wrapper
+│   ├── tts.sh / tts.ps1              # Kokoro neural TTS generation wrapper
+│   ├── generate_neural_tts.py        # Cross-platform neural voice synthesizer
+│   └── generate-audio.sh             # Procedural SFX & voice synthesis pipeline
+├── public/
+│   └── audio/                        # Synchronized narration clips and synthesized SFX
+├── docs/
+│   ├── PRODUCTION_REPORT.md          # 30-second Short technical verification & QA
+│   ├── PHASE4_PRODUCTION_PLAN.md     # 2-3 minute documentary plan & script
+│   └── WINDOWS_SETUP.md              # Windows 11 & RTX 4070 setup instructions
 ├── package.json
+├── package-lock.json
 ├── tsconfig.json
 ├── remotion.config.ts
 ├── .gitignore
@@ -55,38 +63,36 @@ science-video-lab/
 
 ---
 
-## Quick Start / Commands
+## Quick Start
 
-All commands should be run using the provided project-local scripts:
-
-### 1. Render Video
+### macOS (Apple Silicon)
 ```bash
+# Render 30-second Short
 ./scripts/render.sh
-```
-Renders the `SunAnimation` composition to `output/sun-animation.mp4`.
 
-### 2. Inspect with Local ffprobe
-```bash
-./scripts/probe.sh -v error -show_format -show_streams output/sun-animation.mp4
-```
-
-### 3. Open Remotion Studio Preview
-```bash
+# Open interactive Remotion Studio preview
 ./scripts/npm.sh run preview
-```
-Launches the interactive Remotion web preview on `http://localhost:3000`.
 
-### 4. Run Any Command in Local Environment
-```bash
-./scripts/run-in-env.sh <any-command>
+# Generate neural voice audio (Kokoro MLX)
+./scripts/tts.sh --voice am_adam --text "What if the Sun vanished?" --output test.wav
+```
+
+### Windows 11 (PowerShell)
+```powershell
+# See docs/WINDOWS_SETUP.md for full prerequisites
+
+# Render 30-second Short
+.\scripts\render.ps1
+
+# Open interactive Remotion Studio preview
+.\scripts\preview.ps1
+
+# Generate neural voice audio (Kokoro CUDA)
+.\scripts\tts.ps1 -Voice "am_adam" -Text "What if the Sun vanished?" -Output "test.wav"
 ```
 
 ---
 
-## 3-Second Smoke Test Results
-- **Resolution**: 1080 × 1920 (9:16 Vertical)
-- **Framerate**: 30.00 FPS (90 frames total)
-- **Duration**: 3.00 seconds
-- **Video Codec**: H.264 (High Profile, `yuv420p`)
-- **Container**: MP4 (`isom` / `mp42`)
-- **File Size**: ~517 kB
+## Active Compositions
+1. **`SunDisappearsShort`**: 30-second production animation (900 frames, 1080x1920, 30 FPS).
+2. **`SunAnimation`**: 3-second smoke test animation (90 frames, 1080x1920, 30 FPS).
