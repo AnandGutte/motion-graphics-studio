@@ -1,0 +1,8 @@
+node_modules/
+.npm-cache/
+.cache/
+.tmp/
+tools/
+output/*.mp4
+output/*.png
+.DS_Store
