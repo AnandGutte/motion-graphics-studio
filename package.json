@@ -1,7 +1,7 @@
 {
-  "name": "science-video-lab",
+  "name": "motion-graphics-studio",
   "version": "1.0.0",
-  "description": "Fully local, disposable animated video lab using Remotion, React, TypeScript, and FFmpeg",
+  "description": "A reusable, AI-assisted video production studio for animated explainers, educational documentaries, YouTube Shorts, and cinematic motion graphics powered by Remotion, React, TypeScript, Kokoro Neural TTS, and FFmpeg",
   "private": true,
   "scripts": {
     "build": "remotion render src/index.ts SunAnimation output/sun-animation.mp4",

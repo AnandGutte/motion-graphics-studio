@@ -1,7 +1,8 @@
-# Science Video Lab — Technical Command Inventory
+# Motion Graphics Studio — Technical Command Inventory
 
 > **Platform**: Windows 11 Home/Pro (x64), NVIDIA GeForce RTX 4070 (8 GB VRAM)  
-> **Workspace**: `C:\Dev\science-video-lab`  
+> **Workspace**: `C:\Dev\science-video-lab` (Planned folder migration: `C:\Dev\motion-graphics-studio`)  
+> **Remote Repository**: `AnandGutte/science-video-lab` (Planned rename: `AnandGutte/motion-graphics-studio`)  
 > **Classification Legend**:
 > - ✅ **Tested on Windows**: Executed and verified directly on this Windows 11 RTX 4070 machine.
 > - 📋 **Documented / Planned**: Standard operational command prepared for future workflows.
@@ -412,9 +413,9 @@
   ```powershell
   git push origin main
   ```
-- **Explanation**: Uploads local commits to remote repository `AnandGutte/science-video-lab`.
+- **Explanation**: Uploads local commits to remote repository `AnandGutte/science-video-lab` (or `AnandGutte/motion-graphics-studio` following approved remote rename).
 - **Prerequisites**: Explicit human approval; valid credentials.
-- **Expected Output**: `To https://github.com/AnandGutte/science-video-lab.git ...`.
+- **Expected Output**: `To https://github.com/AnandGutte/science-video-lab.git` (or updated remote URL).
 - **Side Effects**: Updates remote repository.
 
 ---

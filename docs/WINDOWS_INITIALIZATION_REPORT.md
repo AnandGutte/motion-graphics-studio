@@ -1,5 +1,8 @@
 # Science Video Lab — Windows 11 Initialization & Validation Report
 
+> **Historical Record Notice**:  
+> This initialization report reflects the original setup and validation of the workspace on 2026-11-09 under its initial project name, **Science Video Lab** (commit `d091456`), prior to its architectural expansion and rebranding as **Motion Graphics Studio**. All benchmarks, environment configurations, and hardware validations documented herein remain authentic, verified, and active.
+
 > **Date**: 2026-11-09  
 > **Target Machine**: Alienware m16 R2  
 > **Workspace Root**: `C:\Dev\science-video-lab`  

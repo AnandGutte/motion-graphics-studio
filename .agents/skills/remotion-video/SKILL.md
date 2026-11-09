@@ -6,7 +6,7 @@ description: "Author, configure, and render programmatic video compositions usin
 # Remotion Video Skill
 
 ## Overview
-This skill guides the creation and rendering of programmatic videos using Remotion v4 inside `science-video-lab`.
+This skill guides the creation and rendering of programmatic videos using Remotion v4 inside Motion Graphics Studio.
 
 ## Workspace Tooling
 Always execute commands using the workspace runner:

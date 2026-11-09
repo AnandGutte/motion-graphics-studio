@@ -6,7 +6,7 @@ description: "Guidelines and procedures for generating high-quality on-device ne
 # Neural Narration Skill (Kokoro MLX)
 
 ## Overview
-This skill guides the production of expressive neural text-to-speech narration directly on Apple Silicon using `kokoro-mlx` in `science-video-lab`.
+This skill guides the production of expressive neural text-to-speech narration directly on Apple Silicon (MLX) and Windows 11 (PyTorch CUDA) in Motion Graphics Studio.
 
 ---
 

@@ -1,37 +1,42 @@
-# AGENTS.md — Science Video Lab Development Guide
+# AGENTS.md — Motion Graphics Studio Development Guide
 
-Welcome to **Science Video Lab**. This file is the primary developer and agent onboarding guide for all Antigravity coding sessions working in this repository.
+Welcome to **Motion Graphics Studio**. This document is the primary developer and agent onboarding guide for all Antigravity coding sessions operating in this repository.
 
 > **Important Security & Scope Notice**:  
-> Standing authorization in this repository applies strictly to routine, non-destructive development tasks within `C:\Dev\science-video-lab`. This document does **not** override Antigravity's actual security boundaries, tool approval dialogues, or operating system access controls.
+> Standing authorization in this repository applies strictly to routine, non-destructive development tasks within the workspace root (`C:\Dev\science-video-lab`, planned for migration to `C:\Dev\motion-graphics-studio`). This document does **not** override Antigravity's native security boundaries, tool approval dialogues, or operating system access controls.
 
 ---
 
-## 1. Project Overview
+## 1. Project Purpose & Philosophy
 
-**Science Video Lab** is a high-performance, automated animation lab that generates science documentaries and educational YouTube Shorts using:
-- **React 18 & Remotion** (`v4.0.542`): Programmatic SVG animation, spring physics, and canvas rendering.
-- **TypeScript**: Strictly typed mathematical coordinates, timing frames, and props.
-- **Kokoro Neural TTS (82M)**: Local, on-device neural voice narration via PyTorch with NVIDIA CUDA acceleration on Windows and MLX on macOS.
-- **FFmpeg & FFprobe**: Broadcast-quality audio mixing, loudness normalization (-14 LUFS), and video encoding (H.264 / AAC).
+**Motion Graphics Studio** is a modular, AI-assisted video production studio engineered to produce high-retention animated explainers, educational documentaries, YouTube Shorts, and cinematic motion graphics.
+
+Key architectural pillars:
+- **Reusable Multi-Production Engine**: Not a single-video codebase. Each video or documentary series is maintained as a distinct production within `src/productions/`, sharing vector components, motion algorithms, neural voices, and rendering infrastructure.
+- **Pure Code-Driven Animation**: Remotion (`v4.0.542`), React 18, and TypeScript driving deterministic frame-based SVG vector animations and spring physics.
+- **On-Device Neural Voice Synthesis**: Kokoro-82M neural TTS accelerated by NVIDIA CUDA (PyTorch 2.6+) on Windows 11 and Apple Silicon MLX on macOS.
+- **Hardware-Accelerated Encoding**: Leveraging NVIDIA RTX 4070 (8 GB VRAM) for NVENC video encoding and parallel headless Chrome rendering.
+- **Broadcast-Grade Audio & Automated QA**: FFmpeg/ffprobe loudness normalization (-14 to -16 LUFS), zero-black-frame verification, and automated contact sheet generation.
+- **Extensible Roadmap**: Designed to expand from 2D vector animations to 3D scenes (Three.js/WebGL), programmatic Blender renders, and multi-language voice pipelines.
 
 ---
 
 ## 2. Key Documentation References
 
-Before performing operations, consult the following project documentation:
+Before performing operations, consult the authoritative studio documentation:
 - 📜 [`AGENT_COMMAND_AUTHORIZATION.md`](file:///C:/Dev/science-video-lab/AGENT_COMMAND_AUTHORIZATION.md): Formal policy on preauthorized routine commands, conditional commands, and actions requiring explicit approval.
 - 📋 [`docs/COMMAND_INVENTORY.md`](file:///C:/Dev/science-video-lab/docs/COMMAND_INVENTORY.md): Comprehensive inventory of 20 tested and planned development workflows on Windows 11.
 - ⚙️ [`docs/WINDOWS_SETUP.md`](file:///C:/Dev/science-video-lab/docs/WINDOWS_SETUP.md): Hardware specifications, environment setup, and driver requirements.
-- 🎬 [`docs/PHASE4_PRODUCTION_PLAN.md`](file:///C:/Dev/science-video-lab/docs/PHASE4_PRODUCTION_PLAN.md): Production blueprint and narration script for the upcoming 2-3 minute documentary.
-- 📊 [`docs/WINDOWS_INITIALIZATION_REPORT.md`](file:///C:/Dev/science-video-lab/docs/WINDOWS_INITIALIZATION_REPORT.md): Initial audit, benchmark numbers, and validation results.
+- 🎬 [`docs/PHASE4_PRODUCTION_PLAN.md`](file:///C:/Dev/science-video-lab/docs/PHASE4_PRODUCTION_PLAN.md): Production blueprint and narration script for the extended Sun Disappearance documentary.
+- 📊 [`docs/WINDOWS_INITIALIZATION_REPORT.md`](file:///C:/Dev/science-video-lab/docs/WINDOWS_INITIALIZATION_REPORT.md): Historical initialization audit, benchmark numbers, and validation results.
+- 📝 [`docs/PROJECT_REBRANDING_REPORT.md`](file:///C:/Dev/science-video-lab/docs/PROJECT_REBRANDING_REPORT.md): Rebranding audit and future workspace migration guide.
 
 ---
 
 ## 3. Repository Architecture
 
-```
-science-video-lab/
+```text
+motion-graphics-studio/
 ├── .agents/
 │   └── skills/                       # 6 Workspace-local Antigravity skills
 │       ├── remotion-video/           # Remotion CLI, compositions, and rendering
@@ -41,9 +46,14 @@ science-video-lab/
 │       ├── video-qa/                 # YouTube Shorts QA spec validation
 │       └── neural-narration/         # On-device Kokoro neural TTS pipeline
 ├── src/
-│   ├── components/                   # Vector graphic components (CartoonSun, CartoonEarth, etc.)
-│   ├── scenes/                       # Scene components (SunScene, EarthScene, etc.)
+│   ├── components/                   # Reusable vector graphic components
+│   ├── scenes/                       # Scene choreography components
 │   ├── compositions/                 # Master compositions (MainShort.tsx)
+│   ├── productions/                  # Production definitions and registry
+│   │   ├── types.ts                  # ProductionDefinition interface
+│   │   ├── sun-disappears/           # "What If the Sun Disappeared?" production
+│   │   │   └── index.ts
+│   │   └── README.md                 # Multi-production architecture guide
 │   ├── Root.tsx                      # Remotion composition registry
 │   └── index.ts                      # Remotion entry point
 ├── scripts/
@@ -66,7 +76,7 @@ science-video-lab/
 
 ## 4. The Six Workspace-Local Agent Skills
 
-Always check and utilize the specialized skills in `.agents/skills/`:
+Always utilize the specialized skills in `.agents/skills/`:
 1. **`remotion-video`**: Composition design, frame rate timing, sequence choreography, CLI rendering flags.
 2. **`react-motion-graphics`**: Interpolation formulas, `spring()` physics, deterministic frame functions.
 3. **`svg-animation`**: Vector mathematics, procedural paths, lighting shaders, relativistic grids.
@@ -76,33 +86,50 @@ Always check and utilize the specialized skills in `.agents/skills/`:
 
 ---
 
-## 5. Standard Development Workflow
+## 5. End-to-End Production Workflow
 
-When modifying code or creating new scenes:
-1. **Develop Scene**: Implement or edit components in `src/components/` and scenes in `src/scenes/`.
-2. **Typecheck**: Verify TypeScript static typing passes without errors:
+Every video production moves through an 11-step pipeline:
+1. **Concept**: Define the thesis, target audience, and retention hook.
+2. **Research**: Gather verified facts and formulas.
+3. **Script**: Draft punchy narration timed for natural cadence.
+4. **Storyboard**: Define scene beats, visual transitions, and frame budgets.
+5. **Asset Creation**: Build reusable SVG components in `src/components/`.
+6. **Narration**: Synthesize speech using local Kokoro CUDA (`scripts/tts.ps1`).
+7. **Animation**: Assemble scenes in `src/scenes/` using deterministic frame functions.
+8. **Audio Mixing**: Balance voiceover, music, and SFX to -14 LUFS standard.
+9. **Rendering**: Render frames with Remotion CLI (`scripts/render.ps1`).
+10. **Quality Assurance**: Automated black frame detection and volume inspection.
+11. **Final Export**: Verified master MP4 archived in `output/`.
+
+---
+
+## 6. Standard Development & Testing Commands
+
+When modifying code or creating new productions:
+
+1. **Static Typecheck**:
    ```powershell
    npx tsc --noEmit
    ```
-3. **Generate Voiceover**: If new narration is needed, synthesize with project-local Kokoro TTS:
+2. **Synthesize Neural Narration** (on NVIDIA RTX 4070):
    ```powershell
    .\scripts\tts.ps1 -Voice "am_adam" -Speed 1.05 -Text "Your narration text here" -Output "public\audio\new_clip.wav"
    ```
-4. **Smoke Test Render**: Run a quick low-frame render to confirm visual integrity:
+3. **Smoke Test Render**:
    ```powershell
    .\scripts\render.ps1 -Composition "SunAnimation" -Output "output\smoke_test.mp4"
    ```
-5. **Production Render**: Render the target composition:
+4. **Production Video Render**:
    ```powershell
    .\scripts\render.ps1 -Composition "SunDisappearsShort" -Output "output\sun-disappears-final.mp4"
    ```
-6. **Automated QA Validation**: Verify zero black frames, correct audio loudness, and inspect contact sheet:
+5. **Automated QA Validation**:
    ```powershell
    ffmpeg -i output\sun-disappears-final.mp4 -af "volumedetect" -f null -
    ffmpeg -i output\sun-disappears-final.mp4 -vf "blackdetect=d=0.2:pix_th=0.10" -an -f null -
    ffmpeg -y -i output\sun-disappears-final.mp4 -vf "fps=1/5,scale=270:480,tile=3x2" -frames:v 1 output\contact_sheet.png
    ```
-7. **Commit Verified Changes Locally**:
+6. **Local Git Commit**:
    ```powershell
    git add <modified-source-files>
    git commit -m "Clear description of tested changes"
@@ -110,15 +137,15 @@ When modifying code or creating new scenes:
 
 ---
 
-## 6. Project Authorization Boundaries
+## 7. Project Authorization Boundaries & Git Safety Rules
 
 Agents must strictly observe:
-- **Project Isolation**: All reads, writes, and process launches are confined to `C:\Dev\science-video-lab`.
-- **Local Commits Permitted**: Staging and committing tested code to the local Git repository is preauthorized.
-- **Explicit Approval Gates**:
-  - ❌ Never execute `git push` to remote GitHub without explicit human approval.
-  - ❌ Never execute destructive operations like `git reset --hard` or `git clean -fdx`.
-  - ❌ Never modify system settings or invoke administrator elevation (`sudo` / `RunAs`).
-  - ❌ Never invoke external paid APIs or cloud speech services.
-  - ❌ Never access unrelated user files or private folders outside `C:\Dev\science-video-lab`.
-- **Phase 4 Documentary Execution**: Do not begin rendering full-scale Phase 4 documentary production until explicitly directed.
+- **Project Isolation**: All operations must remain strictly inside the project root (`C:\Dev\science-video-lab` / future `C:\Dev\motion-graphics-studio`).
+- **Standing Authorization**: Non-destructive diagnostic, compilation, testing, rendering, and local Git commits are preauthorized as detailed in `AGENT_COMMAND_AUTHORIZATION.md`.
+- **Approval Gates**:
+  - ❌ **Never execute `git push`** to remote GitHub without explicit user approval.
+  - ❌ **Never execute destructive Git commands** (`git reset --hard`, `git clean -fdx`, `git rebase -i`).
+  - ❌ **Never modify system settings** or request administrator elevation (`RunAs` / `sudo`).
+  - ❌ **Never invoke external paid APIs** or third-party cloud speech services.
+  - ❌ **Never access files outside the workspace root**.
+- **Production Scope**: Do not initiate rendering of the extended 2-3 minute Phase 4 documentary until explicitly directed.

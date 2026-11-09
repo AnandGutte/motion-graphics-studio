@@ -1,6 +1,8 @@
-# Windows 11 & NVIDIA RTX 4070 Setup Guide
+# Windows 11 & NVIDIA RTX 4070 Setup Guide — Motion Graphics Studio
 
-This guide explains how to clone and run the **Science Video Lab** on a Windows 11 machine equipped with an NVIDIA GeForce RTX 4070 GPU.
+This guide explains how to set up and run **Motion Graphics Studio** on a Windows 11 machine equipped with an NVIDIA GeForce RTX 4070 GPU.
+
+> **Note on Workspace Naming**: The repository was originally initialized as `science-video-lab` and is located at `C:\Dev\science-video-lab`. It is being renamed to `motion-graphics-studio` (see `docs/PROJECT_REBRANDING_REPORT.md`). Both folder names refer to this studio.
 
 ---
 
@@ -31,8 +33,9 @@ This guide explains how to clone and run the **Science Video Lab** on a Windows 
 Open **PowerShell** in your preferred development directory:
 
 ```powershell
-git clone <YOUR_PRIVATE_GITHUB_URL>/science-video-lab.git
-cd science-video-lab
+# Default repository (or updated motion-graphics-studio remote):
+git clone https://github.com/AnandGutte/motion-graphics-studio.git
+cd motion-graphics-studio
 ```
 
 ---

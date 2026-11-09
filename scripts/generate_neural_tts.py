@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Cross-Platform Neural TTS Generator for Science Video Lab.
+Cross-Platform Neural TTS Generator for Motion Graphics Studio.
 - On macOS Apple Silicon: Uses kokoro-mlx (Metal acceleration).
 - On Windows 11 (NVIDIA RTX 4070) & Linux: Uses kokoro (PyTorch CUDA / CPU) or kokoro-onnx.
 All model weights, caches, and output files stay inside the workspace.

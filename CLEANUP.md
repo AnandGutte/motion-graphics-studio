@@ -1,6 +1,6 @@
-# CLEANUP & DISPOSAL INSTRUCTIONS
+# CLEANUP & DISPOSAL INSTRUCTIONS — Motion Graphics Studio
 
-This document outlines everything installed for the `science-video-lab` experiment, where files are located, how to stop active processes, and how to safely and completely delete the project on either macOS or Windows.
+This document outlines everything installed for the **Motion Graphics Studio** (originally initialized as `science-video-lab`), where files are located, how to stop active processes, and how to safely and completely delete the project on either macOS or Windows.
 
 ---
 
@@ -39,24 +39,24 @@ All temporary binaries and caches were isolated strictly within the project root
 
 ```bash
 # macOS / Linux:
-pkill -f "science-video-lab"
+pkill -f "motion-graphics-studio" || pkill -f "science-video-lab"
 
 # Windows (PowerShell):
-Get-Process | Where-Object { $_.CommandLine -like "*science-video-lab*" } | Stop-Process
+Get-Process | Where-Object { $_.CommandLine -like "*motion-graphics-studio*" -or $_.CommandLine -like "*science-video-lab*" } | Stop-Process
 ```
 
 ---
 
-## 4. How to Completely Delete the Experiment
+## 4. How to Completely Delete the Studio
 
 To delete the entire project directory and reclaim all disk space:
 
 ```bash
 # macOS / Linux (from parent directory):
-rm -rf science-video-lab
+rm -rf motion-graphics-studio science-video-lab
 
 # Windows 11 (PowerShell from parent directory):
-Remove-Item -Recurse -Force science-video-lab
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue motion-graphics-studio, science-video-lab
 ```
 
 ### What Will Remain After Deletion:

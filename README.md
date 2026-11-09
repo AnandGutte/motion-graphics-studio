@@ -1,30 +1,66 @@
-# Science Video Lab — Cross-Platform Animated Video Production
+# Motion Graphics Studio — AI-Assisted Animation & Video Production
 
-A self-contained, portable development and rendering environment for programmatic animated YouTube Shorts and science documentaries powered by **Remotion**, **React 18**, **TypeScript**, **Kokoro Neural TTS**, and **FFmpeg**.
+A modular, reusable studio framework for producing programmatic 2D motion graphics, animated explainers, educational documentaries, and YouTube Shorts powered by **Remotion**, **React 18**, **TypeScript**, **Kokoro Neural TTS**, and **FFmpeg**.
 
-Designed for seamless portability between **macOS (Apple Silicon)** and **Windows 11 (NVIDIA GeForce RTX 4070)**.
-
----
-
-## Highlights
-- **Cross-Platform**: Dual execution pipelines for macOS (Bash + MLX Metal) and Windows 11 (PowerShell + PyTorch CUDA / NVENC).
-- **Zero Global Dependencies**: All runtimes, node_modules, Python environments, browser downloads, model weights, and caches are local and excluded from source control via `.gitignore`.
-- **Neural Voice Synthesis**: On-device neural text-to-speech via **Kokoro-82M** (Apple Silicon MLX or NVIDIA CUDA).
-- **Programmatic Motion Graphics**: Deterministic SVG vector animation, spring dynamics, and scene choreography in React.
-- **6 Workspace-Local Agent Skills**: Pre-configured in `.agents/skills/` for Antigravity-powered development.
+Designed for seamless portability between **Windows 11 (NVIDIA GeForce RTX 4070 with CUDA)** and **macOS (Apple Silicon with MLX Metal)**.
 
 ---
 
-## Directory Structure
+## Studio Purpose & Philosophy
+
+**Motion Graphics Studio** is not a single-video codebase, but a permanent, extensible production environment. It provides an end-to-end programmatic pipeline for turning concepts and scripts into broadcast-ready motion graphics videos with synchronized neural voiceovers, dynamic vector graphics, and automated quality assurance.
+
+While currently specialized for high-retention 2D vector animations and educational science explainers, its architecture is domain-agnostic and designed to scale to history, economics, mathematics, technical tutorials, and future 3D/Blender rendering pipelines.
+
+---
+
+## Core Production Technologies
+
+- **Video Engine**: **Remotion** (`v4.0.542`) with Chrome Headless Shell.
+- **Frontend & Logic**: **React 18** and **TypeScript** (strictly typed coordinates, timings, and easing curves).
+- **Visuals**: Procedural SVG graphics, radial glows, space-time relativistic grids, and spring dynamics (`remotion/spring`).
+- **Neural Voiceover**: On-device **Kokoro-82M** neural TTS accelerated via PyTorch CUDA on Windows 11 and MLX on macOS.
+- **Hardware Acceleration**: Local NVIDIA GeForce RTX 4070 (8 GB GDDR6 VRAM) for parallel rendering and neural inference.
+- **Audio Engineering & QA**: **FFmpeg & FFprobe** for loudness normalization (-14 LUFS), zero-black-frame detection, and audio mixing.
+- **AI-Assisted Workflow**: Antigravity agents orchestrating research, scripting, asset creation, narration, and automated QA.
+
+---
+
+## Production Workflow
+
+Every project in the studio progresses through a standardized eleven-stage production lifecycle:
+
 ```
-science-video-lab/
+Concept ──► Research ──► Script ──► Storyboard ──► Asset Creation
+                                                        │
+Final Export ◄── Quality Assurance ◄── Rendering ◄── Audio Mixing ◄── Animation ◄── Narration
+```
+
+1. **Concept**: Define the core educational thesis or viral hook.
+2. **Research**: Gather verified scientific facts, physical constants, and empirical data.
+3. **Script**: Draft punchy narration timed for audience retention and natural vocal cadence.
+4. **Storyboard**: Structure frame-accurate scene beats, camera choreography, and visual cues.
+5. **Asset Creation**: Build procedural SVG components, HUD timers, diagrams, and vector illustrations.
+6. **Narration**: Synthesize on-device neural voiceovers with Kokoro CUDA (`scripts/tts.ps1`).
+7. **Animation**: Program declarative React transitions, spring dynamics, and sequence choreographies.
+8. **Audio Mixing**: Balance sound effects, ambient drones, and voiceover with loudness normalization (-14 LUFS).
+9. **Rendering**: Headless Chrome frame rasterization via Remotion CLI (`scripts/render.ps1`).
+10. **Quality Assurance**: Inspect audio peaks, detect black frames (`blackdetect`), and generate contact sheets.
+11. **Final Export**: Tag and archive the master MP4 in `output/`.
+
+---
+
+## Repository Architecture
+
+```text
+motion-graphics-studio/
 ├── .agents/
-│   └── skills/
+│   └── skills/                       # 6 Workspace-local Antigravity skills
 │       ├── remotion-video/           # Remotion CLI, compositions, and rendering
-│       ├── react-motion-graphics/    # Spring physics, deterministic animation principles
-│       ├── svg-animation/            # Procedural SVGs, radial gradients, coronal glows
-│       ├── ffmpeg-audio-video/       # Local FFmpeg/ffprobe inspection & normalization
-│       ├── video-qa/                 # Quality assurance & YouTube Shorts spec validation
+│       ├── react-motion-graphics/    # Spring physics, deterministic animation
+│       ├── svg-animation/            # Procedural SVGs, gradients, coronal glows
+│       ├── ffmpeg-audio-video/       # FFmpeg/ffprobe inspection & normalization
+│       ├── video-qa/                 # YouTube Shorts QA spec validation
 │       └── neural-narration/         # On-device Kokoro neural TTS pipeline
 ├── src/
 │   ├── components/                   # Reusable vector graphic components
@@ -35,37 +71,69 @@ science-video-lab/
 │   │   ├── OrbitDiagram.tsx          # Relativistic space-time grid & gravity ripple
 │   │   ├── TimerBadge.tsx            # Digital HUD timer
 │   │   └── Captions.tsx              # YouTube Shorts safe-area typography pills
-│   ├── scenes/                       # Individual scene components (Scenes 1 - 6)
+│   ├── scenes/                       # Scene choreography components
 │   ├── compositions/                 # Master compositions (MainShort.tsx)
+│   ├── productions/                  # Multi-production registry and specifications
+│   │   ├── types.ts                  # ProductionDefinition schema
+│   │   ├── sun-disappears/           # "What If the Sun Disappeared?" production
+│   │   │   └── index.ts
+│   │   └── README.md                 # Production authoring guide
 │   ├── Root.tsx                      # Remotion composition registry
 │   └── index.ts                      # Remotion entry point
 ├── scripts/
-│   ├── render.sh / render.ps1        # Render composition to MP4 (macOS / Windows)
-│   ├── preview.sh / preview.ps1      # Launch Remotion interactive web preview
-│   ├── probe.sh / probe.ps1          # ffprobe inspection wrapper
-│   ├── tts.sh / tts.ps1              # Kokoro neural TTS generation wrapper
-│   ├── generate_neural_tts.py        # Cross-platform neural voice synthesizer
-│   └── generate-audio.sh             # Procedural SFX & voice synthesis pipeline
+│   ├── render.ps1 / render.sh        # Video rendering wrapper (Windows / macOS)
+│   ├── preview.ps1 / preview.sh      # Remotion Studio preview server
+│   ├── probe.ps1 / probe.sh          # Media stream analysis wrapper
+│   ├── tts.ps1 / tts.sh              # Kokoro neural TTS synthesis wrapper
+│   └── generate_neural_tts.py        # Cross-platform PyTorch/MLX voice generator
 ├── public/
-│   └── audio/                        # Synchronized narration clips and synthesized SFX
+│   └── audio/                        # Synchronized narration WAVs and sound effects
 ├── docs/
+│   ├── COMMAND_INVENTORY.md          # Comprehensive inventory of development commands
+│   ├── WINDOWS_SETUP.md              # Windows 11 & RTX 4070 setup instructions
+│   ├── WINDOWS_INITIALIZATION_REPORT.md # Initial benchmark & environment audit
+│   ├── PHASE4_PRODUCTION_PLAN.md     # Extended 2-3 minute documentary production plan
 │   ├── PRODUCTION_REPORT.md          # 30-second Short technical verification & QA
-│   ├── PHASE4_PRODUCTION_PLAN.md     # 2-3 minute documentary plan & script
-│   └── WINDOWS_SETUP.md              # Windows 11 & RTX 4070 setup instructions
-├── package.json
-├── package-lock.json
-├── tsconfig.json
-├── remotion.config.ts
-├── .gitignore
-├── README.md
-└── CLEANUP.md
+│   └── PROJECT_REBRANDING_REPORT.md  # Identity rebrand & architecture documentation
+├── output/                           # Rendered MP4s, test audio, and QA contact sheets
+├── .venv/                            # Local Python 3.10+ virtual environment (CUDA)
+├── node_modules/                     # Local npm dependencies
+├── AGENT_COMMAND_AUTHORIZATION.md    # Standing authorization policy
+├── AGENTS.md                         # Agent onboarding guide
+└── package.json
 ```
+
+---
+
+## Active Productions
+
+### 1. `sun-disappears` — "What If the Sun Disappeared?"
+- **Short Composition (`SunDisappearsShort`)**: 30-second production animation (900 frames, 1080x1920, 30 FPS).
+- **Smoke Test Composition (`SunAnimation`)**: 3-second smoke test animation (90 frames, 1080x1920, 30 FPS).
+- **Planned Documentary**: Extended 2–3-minute deep dive into the astrophysics of solar disappearance (see `docs/PHASE4_PRODUCTION_PLAN.md`).
 
 ---
 
 ## Quick Start
 
-### macOS (Apple Silicon)
+### Windows 11 (PowerShell with NVIDIA CUDA)
+```powershell
+# See docs/WINDOWS_SETUP.md for full prerequisites
+
+# Render 30-second Short
+.\scripts\render.ps1
+
+# Launch interactive Remotion Studio preview
+.\scripts\preview.ps1
+
+# Synthesize neural voiceover (Kokoro CUDA)
+.\scripts\tts.ps1 -Voice "am_adam" -Speed 1.05 -Text "What if the Sun vanished?" -Output "output\test.wav"
+
+# Perform audio volume QA check
+ffmpeg -i output\sun-disappears-final.mp4 -af "volumedetect" -f null -
+```
+
+### macOS (Apple Silicon with MLX)
 ```bash
 # Render 30-second Short
 ./scripts/render.sh
@@ -73,26 +141,6 @@ science-video-lab/
 # Open interactive Remotion Studio preview
 ./scripts/npm.sh run preview
 
-# Generate neural voice audio (Kokoro MLX)
-./scripts/tts.sh --voice am_adam --text "What if the Sun vanished?" --output test.wav
+# Synthesize neural voiceover (Kokoro MLX)
+./scripts/tts.sh --voice am_adam --text "What if the Sun vanished?" --output output/test.wav
 ```
-
-### Windows 11 (PowerShell)
-```powershell
-# See docs/WINDOWS_SETUP.md for full prerequisites
-
-# Render 30-second Short
-.\scripts\render.ps1
-
-# Open interactive Remotion Studio preview
-.\scripts\preview.ps1
-
-# Generate neural voice audio (Kokoro CUDA)
-.\scripts\tts.ps1 -Voice "am_adam" -Text "What if the Sun vanished?" -Output "test.wav"
-```
-
----
-
-## Active Compositions
-1. **`SunDisappearsShort`**: 30-second production animation (900 frames, 1080x1920, 30 FPS).
-2. **`SunAnimation`**: 3-second smoke test animation (90 frames, 1080x1920, 30 FPS).

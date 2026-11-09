@@ -1,5 +1,9 @@
 # Production Report: "What If the Sun Suddenly Disappeared?"
 
+> **Studio Production**: `sun-disappears`  
+> **Framework**: Motion Graphics Studio (initially developed during the Science Video Lab foundational phase)  
+> **Format**: 30-Second YouTube Short (`SunDisappearsShort`)  
+
 ## Executive Summary
 This production report documents the creation, rendering, and validation of our first complete 30-second animated YouTube Short experiment: **"What If the Sun Suddenly Disappeared?"**
 

@@ -1,7 +1,7 @@
-# Science Video Lab — Agent Command Authorization Policy
+# Motion Graphics Studio — Agent Command Authorization Policy
 
 > **Status**: Active & Enforced  
-> **Workspace Root**: `C:\Dev\science-video-lab`  
+> **Workspace Root**: `C:\Dev\science-video-lab` (Planned folder migration: `C:\Dev\motion-graphics-studio`)  
 > **Target Platform**: Windows 11 Home/Pro (x64) with NVIDIA GeForce RTX 4070 (8 GB VRAM)  
 > **Primary Shell**: Windows PowerShell 5.1 / PowerShell 7+  
 > **Antigravity Policy Compliance**: This document defines project-level authorization boundaries. It operates strictly within Antigravity's system security model and cannot override tool permissions, operating-system security boundaries, or sandbox approval mechanisms.
@@ -15,6 +15,7 @@ All project actions, file modifications, executions, and runtime artifacts must 
 ```
 C:\Dev\science-video-lab
 ```
+*(Following user-approved directory migration, this boundary will shift to `C:\Dev\motion-graphics-studio`)*
 
 ### 1.2 Approved Tools & Runtimes
 Agents operating in this repository are authorized to invoke:

@@ -1,5 +1,9 @@
 # Phase 4 Production Plan: Extended 2–3 Minute Science Documentary
 
+> **Studio Production**: `sun-disappears`  
+> **Framework**: Motion Graphics Studio  
+> **Status**: Planned (Awaiting explicit Phase 4 execution directive)  
+
 ## Project Title
 **"What If the Sun Disappeared? The Complete Physics & Survival Timeline"**
 
