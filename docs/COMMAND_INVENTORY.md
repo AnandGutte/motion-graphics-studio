@@ -173,23 +173,25 @@
 ## 7. Remotion Development & Preview
 
 ### 7.1 Discover Available Compositions
-- **Status**: ✅ Tested on Windows | 🟢 Preauthorized
+- **Status**: ✅ Tested on Windows | 🟢 Preauthorized (Requires Native Unsandboxed Approval for 127.0.0.1 CDP WebSocket)
 - **Command**:
   ```powershell
   npx remotion compositions src/index.ts
   ```
 - **Explanation**: Bundles React code and outputs registered composition IDs, dimensions, frame rates, and durations.
+- **Sandbox Limitation & Execution Requirement**: When executed inside Antigravity's standard Windows sandbox, this command fails because Chrome DevTools Protocol WebSocket communication to `127.0.0.1` is blocked with `connect EACCES 127.0.0.1:<port>`. To discover compositions, agents must request single-command unsandboxed execution via Antigravity's native approval mechanism (`BypassSandbox: true`). Sandboxing must not be disabled globally.
 - **Prerequisites**: Dependencies installed via `npm ci`.
 - **Expected Output**: Compositions table listing `SunDisappearsShort` (900 frames, 30s) and `SunAnimation` (90 frames, 3s).
 - **Side Effects**: Caches bundle in `node_modules/.cache`.
 
 ### 7.2 Launch Remotion Studio Preview
-- **Status**: ✅ Tested on Windows | 🟢 Preauthorized
+- **Status**: ✅ Tested on Windows | 🟢 Preauthorized (Requires Native Unsandboxed Approval for Port 3000 & CDP WebSocket)
 - **Command**:
   ```powershell
   .\scripts\preview.ps1
   ```
 - **Explanation**: Launches interactive web GUI at `http://localhost:3000` with timeline scrubber and live visual canvas.
+- **Sandbox Limitation & Execution Requirement**: The local HTTP preview server and Chrome DevTools Protocol loopback sockets require single-command unsandboxed approval (`BypassSandbox: true`) to be reachable.
 - **Prerequisites**: Chrome Headless Shell installed.
 - **Expected Output**: Remotion Studio running on port 3000.
 - **Side Effects**: Spawns local HTTP server.
@@ -199,23 +201,25 @@
 ## 8. Full Video Rendering
 
 ### 8.1 3-Second Smoke Test Render
-- **Status**: ✅ Tested on Windows | 🟢 Preauthorized
+- **Status**: ✅ Tested on Windows | 🟢 Preauthorized (Requires Native Unsandboxed Approval for 127.0.0.1 CDP WebSocket)
 - **Command**:
   ```powershell
   .\scripts\render.ps1 -Composition "SunAnimation" -Output "output\sun-animation-smoke.mp4"
   ```
 - **Explanation**: Renders 90 frames of vector animation to verify pipeline end-to-end in < 10 seconds.
+- **Sandbox Limitation & Execution Requirement**: Remotion uses headless Chrome over loopback CDP WebSocket to render frames. In the Antigravity Windows sandbox, `127.0.0.1` connects are denied with `EACCES`. This command requires single-command unsandboxed execution (`BypassSandbox: true`).
 - **Prerequisites**: npm dependencies installed.
 - **Expected Output**: `Render completed successfully: output\sun-animation-smoke.mp4`.
 - **Side Effects**: Generates ~840 kB MP4 file.
 
 ### 8.2 Full 30-Second Production Render
-- **Status**: ✅ Tested on Windows | 🟢 Preauthorized
+- **Status**: ✅ Tested on Windows | 🟢 Preauthorized (Requires Native Unsandboxed Approval for 127.0.0.1 CDP WebSocket)
 - **Command**:
   ```powershell
   .\scripts\render.ps1 -Composition "SunDisappearsShort" -Output "output\sun-disappears-final.mp4"
   ```
 - **Explanation**: Renders all 6 scenes (900 frames, 1080x1920 @ 30fps) with multi-track narration, sound effects, and captions.
+- **Sandbox Limitation & Execution Requirement**: Requires single-command unsandboxed execution (`BypassSandbox: true`) for headless Chrome DevTools communication over `127.0.0.1`.
 - **Prerequisites**: All audio assets present in `public/audio/`.
 - **Expected Output**: `Render completed successfully: output\sun-disappears-final.mp4` (~9.0 MB).
 - **Side Effects**: Generates production MP4.

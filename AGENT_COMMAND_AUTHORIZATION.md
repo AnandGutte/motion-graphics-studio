@@ -47,7 +47,7 @@ Agents operating in this repository are authorized to invoke:
 - **Authorized Locally**: Creating branches, staging files, checking diffs, inspecting logs, and creating clean local commits.
 - **Forbidden Remotely**: `git push`, `git push --force`, `git pull --rebase` to non-tracked remotes, merging pull requests on GitHub, or changing remote repository URLs without explicit user instruction.
 
-### 1.5 Network & Download Boundaries
+### 1.5 Network, Download & Localhost Boundaries
 - **Permitted Network Destinations**:
   - Official npm registry (`registry.npmjs.org`) for lockfile-compliant dependencies.
   - Official PyTorch wheel servers (`download.pytorch.org`) for CUDA wheels.
@@ -56,6 +56,11 @@ Agents operating in this repository are authorized to invoke:
 - **Forbidden Network Destinations**:
   - Paid API services (OpenAI, Anthropic, ElevenLabs, Runway, etc.).
   - Untrusted third-party script downloaders or unverified package mirrors.
+- **Localhost / Loopback Sandbox Boundary**:
+  - The Antigravity Windows sandbox strictly blocks outgoing TCP connections to `127.0.0.1` (`EACCES`, errno `-4092`).
+  - Commands relying on the Chrome DevTools Protocol (CDP) WebSocket to `127.0.0.1` (such as `npx remotion compositions`, `remotion render`, and `remotion preview`) cannot complete inside the sandbox.
+  - When such localhost socket communication is required, agents must request the minimum necessary unsandboxed approval for that specific command only via Antigravity's native approval mechanism.
+  - Agents must **never disable sandboxing globally** or grant unrestricted permissions across the session. All other operations (static typechecking, Python CUDA TTS, FFmpeg QA, file writes, Git inspections) must remain strictly sandboxed.
 
 ---
 
@@ -70,15 +75,19 @@ The developer has granted standing authorization for routine, non-destructive de
 | **Local Git Commits** | Commit tested code & documentation | `git add <files>`, `git commit -m "..."` |
 | **Node.js Dependencies** | Install reproducible npm packages | `npm ci`, `npm ls` |
 | **TypeScript Validation** | Static typechecking without emit | `npx tsc --noEmit` |
-| **Remotion Discovery** | List compositions and duration | `npx remotion compositions src/index.ts` |
-| **Video Rendering** | Render test and production compositions | `.\scripts\render.ps1 -Composition ... -Output ...` |
-| **Remotion Studio** | Launch local preview server | `.\scripts\preview.ps1`, `npx remotion preview src/index.ts` |
+| **Remotion Discovery** | List compositions and duration | `npx remotion compositions src/index.ts` *(Requires single-command unsandboxed approval due to 127.0.0.1 CDP socket)* |
+| **Video Rendering** | Render test and production compositions | `.\scripts\render.ps1 -Composition ... -Output ...` *(Requires single-command unsandboxed approval due to 127.0.0.1 CDP socket)* |
+| **Remotion Studio** | Launch local preview server | `.\scripts\preview.ps1`, `npx remotion preview src/index.ts` *(Requires single-command unsandboxed approval due to localhost HTTP/CDP sockets)* |
 | **Python Environment** | Manage and run virtual environment | `python -m venv .venv`, `.\.venv\Scripts\python.exe ...` |
 | **PyTorch & CUDA Testing** | Validate GPU availability and memory | `.\.venv\Scripts\python.exe -c "import torch; print(torch.cuda.is_available())"` |
 | **Neural TTS Generation** | Generate voiceover audio | `.\scripts\tts.ps1 -Voice ... -Text ... -Output ...` |
 | **FFmpeg QA & Probing** | Inspect codecs, detect silence/black frames | `.\scripts\probe.ps1 ...`, `ffmpeg -i ... -af volumedetect -f null -` |
 | **Contact Sheet Generation** | Generate visual QA grid tiles | `ffmpeg -y -i ... -vf "fps=...,scale=...,tile=..." -frames:v 1 ...` |
 | **Output Maintenance** | Clean old renders within `output/` | `Remove-Item output\*.mp4 -Force` |
+
+> **Sandbox Limitation & Native Approval Rule for Remotion Operations**:  
+> Remotion composition discovery (`remotion compositions`), video rendering (`render.ps1`), and preview (`preview.ps1`) require internal Chrome DevTools Protocol (CDP) WebSocket communication on `127.0.0.1`. Inside the Antigravity Windows sandbox, outbound connections to `127.0.0.1` are denied with `EACCES` (-4092).  
+> **Policy**: When running these Remotion operations, agents must request the minimum necessary execution permission via Antigravity's native per-command approval dialog (`BypassSandbox: true`). Sandboxing must **never** be disabled globally or granted unconditionally across unrelated commands. All preparation, static validation (`npx tsc`), neural audio synthesis, and quality inspection must remain sandboxed.
 
 ---
 
@@ -136,9 +145,9 @@ The following actions are strictly forbidden at all times under any circumstance
 | `git commit -m "..."` | Commit local changes | Creates Git commit | `.git/` | No | Low | **Preauthorized** |
 | `npm ci` | Install lockfile packages | Installs JS deps | `node_modules/` | Yes (first run) | Low | **Preauthorized** |
 | `npx tsc --noEmit` | Validate TypeScript | Read-only check | None | No | Low | **Preauthorized** |
-| `npx remotion compositions src/index.ts` | Discover compositions | Bundles JS code | `.cache/` | No | Low | **Preauthorized** |
-| `.\scripts\render.ps1 -Composition "..." -Output "..."` | Render MP4 video | Generates MP4 | `output/` | No | Low | **Preauthorized** |
-| `.\scripts\preview.ps1` | Start Remotion Studio | Opens HTTP port 3000 | Network port | No | Low | **Preauthorized** |
+| `npx remotion compositions src/index.ts` | Discover compositions | Bundles JS code | `.cache/` | Localhost (127.0.0.1 CDP socket) | Low | **Preauthorized (Requires Native Unsandboxed Approval for CDP)** |
+| `.\scripts\render.ps1 -Composition "..." -Output "..."` | Render MP4 video | Generates MP4 | `output/` | Localhost (127.0.0.1 CDP socket) | Low | **Preauthorized (Requires Native Unsandboxed Approval for CDP)** |
+| `.\scripts\preview.ps1` | Start Remotion Studio | Opens HTTP port 3000 | Network port | Localhost (Port 3000 & CDP) | Low | **Preauthorized (Requires Native Unsandboxed Approval for CDP)** |
 | `python -m venv .venv` | Create local Python venv | Creates venv dir | `.venv/` | No | Low | **Preauthorized** |
 | `.\.venv\Scripts\python.exe -m pip install ...` | Install Python package | Modifies venv packages | `.venv/Lib/` | Yes | Medium | **Conditional** |
 | `.\scripts\tts.ps1 -Voice ... -Text ... -Output ...` | Generate neural speech | Creates WAV audio | `output/`, `.cache/` | Yes (on 1st run) | Low | **Preauthorized** |
